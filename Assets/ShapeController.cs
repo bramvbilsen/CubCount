@@ -43,11 +43,17 @@ public class ShapeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Color myColor = new Color();
+        ColorUtility.TryParseHtmlString("#f2d9a1", out myColor);
+        
         //Spawn block
         if(Input.GetKeyDown(KeyCode.X)) {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.parent = this.transform;
             cube.transform.position = new Vector3(0, 0.5f, 0);
+            cube.GetComponent<Renderer> ().material.color = myColor;
+
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
