@@ -22,6 +22,7 @@ public class ShapeController : MonoBehaviour
         //Spawn block
         if(Input.GetKeyDown(KeyCode.X)) {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.parent = this.transform;
             cube.transform.position = new Vector3(0, 0.5f, 0);
         }
 
