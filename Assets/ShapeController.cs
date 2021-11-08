@@ -26,11 +26,6 @@ public class ShapeController : MonoBehaviour
             cube.transform.position = new Vector3(0, 0.5f, 0);
         }
 
-        y = 5 + y;
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) {
-            transform.localRotation = Quaternion.Euler(0, y, 0);
-        }
-
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             y += 45;
             transform.localRotation = Quaternion.Euler(0, y , 0);
