@@ -13,12 +13,18 @@ public class ShapeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Spawn block
+        if(Input.GetKeyDown(KeyCode.X)) {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = new Vector3(0, 0.5f, 0);
+        }
+
         y = 5 + y;
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) {
             transform.localRotation = Quaternion.Euler(0, y, 0);
