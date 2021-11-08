@@ -30,8 +30,16 @@ public class ShapeController : MonoBehaviour
             transform.localRotation = Quaternion.Euler(0, y, 0);
         }
 
-        if (Input.GetAxis("Mouse ScrollWheel") != 0) {
-            transform.position += scrollSpeed * new Vector3(0, -Input.GetAxis("Mouse ScrollWheel"), 0);
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            y += 45;
+            transform.localRotation = Quaternion.Euler(0, y , 0);
         }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            y -= 45;
+            transform.localRotation = Quaternion.Euler(0, y, 0);
+        }
+
+        
     }
 }
