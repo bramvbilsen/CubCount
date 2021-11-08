@@ -20,13 +20,13 @@ public class ShapeController : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKey(KeyCode.LeftArrow)) {
-            y = y - 5;
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            y += 45;
             transform.localRotation = Quaternion.Euler(0, y , 0);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow)) {
-            y = y + 5;
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            y -= 45;
             transform.localRotation = Quaternion.Euler(0, y, 0);
         }
 
