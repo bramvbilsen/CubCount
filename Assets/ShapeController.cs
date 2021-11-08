@@ -12,6 +12,10 @@ public class ShapeController : MonoBehaviour
 
     private bool turnLeft;
     private bool turnRight;
+    private Color myColor;
+    Renderer m_ObjectRenderer;
+    Color tempcolor;
+
     public void RotateLeft()
     {
         turnLeft = true;
@@ -33,6 +37,42 @@ public class ShapeController : MonoBehaviour
             turnRight = false;
         }
     }
+
+    public void spawnCubes(){
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
+                for (int k=0;k<8;k++){
+                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cube.transform.parent = this.transform;
+                    cube.transform.position = new Vector3(-4+i,-4+j, -4+k);
+                    cube.GetComponent<Renderer> ().material.color = myColor;
+                }
+            }
+        }
+    }
+    public void spawnCubesInSphere(){
+        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.transform.localScale = new Vector3(5, 5, 5);
+        //Fetch the GameObject's Renderer component
+        m_ObjectRenderer = sphere.GetComponent<Renderer>();
+        Color newColor = new Color(255f,255f,255f,.5f);
+        m_ObjectRenderer.material.SetColor("_Color", newColor);
+        // m_ObjectRenderer.material.color = new Color(255f,255f,255f,.5f);
+        // //Change the GameObject's Material Color to red
+        // //m_ObjectRenderer.material.color = Color.red;
+        // tempcolor = m_ObjectRenderer.material.color;
+        // tempcolor.a = 0.8f;
+        // m_ObjectRenderer.material.color = tempcolor;
+
+
+        // GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        // sphere.transform.position = new Vector3(0, 1.5f, 0);
+        //sphere.GetComponent<Renderer>().material.color.a = 0.7f;
+        
+        //Vector3 center = sphere.GetComponent<Renderer>().bounds.center;
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,17 +83,12 @@ public class ShapeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        Color myColor = new Color();
+        myColor = new Color();
         ColorUtility.TryParseHtmlString("#f2d9a1", out myColor);
         
         //Spawn block
         if(Input.GetKeyDown(KeyCode.X)) {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.parent = this.transform;
-            cube.transform.position = new Vector3(0, 0.5f, 0);
-            cube.GetComponent<Renderer> ().material.color = myColor;
-
+            spawnCubesInSphere();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
