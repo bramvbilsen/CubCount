@@ -19,6 +19,15 @@ public class ShapeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(0, degreesPerSecond, 0) * Time.deltaTime);
+         if (Input.GetKey(KeyCode.LeftArrow)) {
+            y = y - 5;
+            transform.localRotation = Quaternion.Euler(0, y , 0);
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            y = y + 5;
+            transform.localRotation = Quaternion.Euler(0, y, 0);
+        }
+
     }
 }
