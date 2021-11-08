@@ -10,10 +10,34 @@ public class ShapeController : MonoBehaviour
 
     private float y = 0f;
 
+    private bool turnLeft;
+    private bool turnRight;
+    public void RotateLeft()
+    {
+        turnLeft = true;
+    }
+    public void RotateRight()
+    {
+        turnRight = true;
+    }
+
+    public void ShapeRotation() {
+        if (turnLeft){
+             y += 45;
+            transform.localRotation = Quaternion.Euler(0, y , 0);
+            turnLeft = false;
+        }
+        else if (turnRight){
+            y -= 45;
+            transform.localRotation = Quaternion.Euler(0, y, 0);
+            turnRight = false;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-
+        turnLeft = false;
+        turnRight = false;
     }
 
     // Update is called once per frame
@@ -27,15 +51,13 @@ public class ShapeController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            y += 45;
-            transform.localRotation = Quaternion.Euler(0, y , 0);
+            RotateLeft();
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            y -= 45;
-            transform.localRotation = Quaternion.Euler(0, y, 0);
+            RotateRight();
         }
 
-        
+        ShapeRotation();
     }
 }
