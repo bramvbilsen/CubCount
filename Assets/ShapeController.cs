@@ -38,6 +38,12 @@ public class ShapeController : MonoBehaviour
         }
     }
 
+    // void OnCollisionEnter(Collision collision){
+    //     if(col.gameObject.name == "Sphere"){
+    //         Destroy(col.gameObject);
+    //     }
+    // }
+
     public void spawnCubes(){
         for (int i=0;i<8;i++){
             for (int j=0;j<8;j++){
@@ -50,6 +56,7 @@ public class ShapeController : MonoBehaviour
             }
         }
     }
+
     public void spawnCubesInSphere(){
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sphere.transform.localScale = new Vector3(5, 5, 5);
@@ -68,7 +75,7 @@ public class ShapeController : MonoBehaviour
         // GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         // sphere.transform.position = new Vector3(0, 1.5f, 0);
         //sphere.GetComponent<Renderer>().material.color.a = 0.7f;
-        
+
         //Vector3 center = sphere.GetComponent<Renderer>().bounds.center;
 
     }
