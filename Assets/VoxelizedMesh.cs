@@ -4,7 +4,7 @@ using UnityEngine;
 public class VoxelizedMesh : MonoBehaviour
 {
     public List<Vector3Int> GridPoints = new List<Vector3Int>();
-    public float HalfSize = 0.1f;
+    public float HalfSize = 0.05f;
     public Vector3 LocalOrigin;
 
     public Vector3 PointToPosition(Vector3Int point)
