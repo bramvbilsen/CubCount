@@ -6,6 +6,8 @@ using UnityEditor;
 
 public class ShapeController : MonoBehaviour
 {
+    public GameObject suzanne;
+    MeshFilter yourMesh;
     
     private float moveSpeed = 0.5f;
     private float scrollSpeed = 10f;
@@ -45,6 +47,66 @@ public class ShapeController : MonoBehaviour
     //         Destroy(col.gameObject);
     //     }
     // }
+
+    public VoxelizedMesh VoxelizeMesh(MeshFilter meshFilter)
+    {
+        if (!meshFilter.TryGetComponent(out MeshCollider meshCollider))
+        {
+            meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
+        }
+
+        if (!meshFilter.TryGetComponent(out VoxelizedMesh voxelizedMesh))
+        {
+            voxelizedMesh = meshFilter.gameObject.AddComponent<VoxelizedMesh>();
+        } else{
+            Debug.Log("voxelizedmeshfout");
+        }
+
+        Bounds bounds = meshCollider.bounds;
+        Vector3 minExtents = bounds.center - bounds.extents;
+        float halfSize = voxelizedMesh.HalfSize;
+        Vector3 count = bounds.extents / halfSize;
+
+        int xGridSize = Mathf.CeilToInt(count.x);
+        int yGridSize = Mathf.CeilToInt(count.y);
+        int zGridSize = Mathf.CeilToInt(count.z);
+
+        voxelizedMesh.GridPoints.Clear();
+        voxelizedMesh.LocalOrigin = voxelizedMesh.transform.InverseTransformPoint(minExtents);
+
+        for (int x = 0; x < xGridSize; ++x)
+        {
+            for (int z = 0; z < zGridSize; ++z)
+            {
+                for (int y = 0; y < yGridSize; ++y)
+                {
+                    Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
+                    if (Physics.CheckBox(pos, new Vector3(halfSize, halfSize, halfSize)))
+                    {
+                        voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
+                    }
+                }
+            }
+        }
+        return voxelizedMesh;
+    }
+
+    public void spawnModel(){
+         GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
+         spawnedSuzanne.transform.parent = this.transform;
+         spawnVoxilizedMesh(spawnedSuzanne);
+    }
+
+    public void spawnVoxilizedMesh(GameObject go){
+        yourMesh = go.GetComponent<MeshFilter>();
+        VoxelizedMesh voxel = VoxelizeMesh(yourMesh);
+        foreach(Vector3Int gp in voxel.GridPoints){
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.parent = this.transform;
+            cube.transform.position = gp;
+            Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
+        }
+    }
 
     public void spawnCubes(){
         for (int i=0;i<8;i++){
@@ -97,8 +159,12 @@ public class ShapeController : MonoBehaviour
         
         //Spawn block
         if(Input.GetKeyDown(KeyCode.X)) {
-            spawnCubesInSphere();
+            spawnModel();
         }
+
+        // if(Input.GetKeyDown(KeyCode.Z)) {
+        //     spawnVoxilizedMesh();
+        // }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             RotateLeft();
