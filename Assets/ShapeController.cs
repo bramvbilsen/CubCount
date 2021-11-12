@@ -16,7 +16,7 @@ public class ShapeController : MonoBehaviour
 
     private bool turnLeft;
     private bool turnRight;
-    private Color myColor;
+    private Color myColor = new Color(0.95f,0.82f,0.63f,0.15f);
     Renderer m_ObjectRenderer;
     Color tempcolor;
 
@@ -99,12 +99,21 @@ public class ShapeController : MonoBehaviour
 
     public void spawnVoxilizedMesh(GameObject go){
         yourMesh = go.GetComponent<MeshFilter>();
-        VoxelizedMesh voxel = VoxelizeMesh(yourMesh);
-        foreach(Vector3Int gp in voxel.GridPoints){
+        VoxelizedMesh voxels = VoxelizeMesh(yourMesh);
+        foreach(Vector3Int gp in voxels.GridPoints){
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.parent = this.transform;
-            cube.transform.position = gp;
+            cube.transform.position = voxels.PointToPosition(gp);
+            cube.GetComponent<Renderer> ().material.color = myColor;
             Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
+            cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
+
+            GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube2.transform.parent = this.transform;
+            cube2.transform.position = gp;
+            cube2.GetComponent<Renderer> ().material.color = myColor;
+            Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
+            cube2.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
         }
     }
 
@@ -153,11 +162,8 @@ public class ShapeController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        myColor = new Color();
-        ColorUtility.TryParseHtmlString("#f2d9a1", out myColor);
-        
-        //Spawn block
+    {        
+        //Spawn model
         if(Input.GetKeyDown(KeyCode.X)) {
             spawnModel();
         }
