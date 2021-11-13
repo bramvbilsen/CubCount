@@ -15,7 +15,11 @@ public class TextController : MonoBehaviour
 
     public void Backspace(){
         Text guessText = txt.GetComponent<Text>();
-        guessText.text = guessText.text.Remove(guessText.text.Length-1);
+
+        if (guessText.text != "")
+        {
+            guessText.text = guessText.text.Remove(guessText.text.Length-1);
+        }
     }
 
     public void Clear(){
