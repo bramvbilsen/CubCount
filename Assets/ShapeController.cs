@@ -7,6 +7,7 @@ using UnityEditor;
 public class ShapeController : MonoBehaviour
 {
     public GameObject suzanne;
+    
     MeshFilter yourMesh;
     
     private float moveSpeed = 0.5f;
@@ -16,7 +17,7 @@ public class ShapeController : MonoBehaviour
 
     private bool turnLeft;
     private bool turnRight;
-    private Color myColor = new Color(0.95f,0.82f,0.63f,0.15f);
+    private Color myColor = new Color(0.95f,0.82f,0.63f,0.3f);
     Renderer m_ObjectRenderer;
     Color tempcolor;
 
@@ -93,28 +94,64 @@ public class ShapeController : MonoBehaviour
 
     public void spawnModel(){
          GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
-         spawnedSuzanne.transform.parent = this.transform;
+         //spawnedSuzanne.transform.parent = this.transform;
+        //  Color Seethrough = new Color(1.0f,1.0f,1.0f,0.0f);
+        //  spawnedSuzanne.GetComponent<Renderer> ().material.color = myColor;
+        //  spawnedSuzanne.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
          spawnVoxilizedMesh(spawnedSuzanne);
+         Destroy(spawnedSuzanne);
     }
 
     public void spawnVoxilizedMesh(GameObject go){
         yourMesh = go.GetComponent<MeshFilter>();
         VoxelizedMesh voxels = VoxelizeMesh(yourMesh);
+        int max = 0;
+        int min = 100;
         foreach(Vector3Int gp in voxels.GridPoints){
+            if (gp.x> max){
+                max = gp.x;
+            }
+            if (gp.y> max){
+                max = gp.y;
+            }
+            if (gp.z> max){
+                max = gp.z;
+            }
+            if (gp.x< min){
+                min = gp.x;
+            }
+            if (gp.y< min){
+                min = gp.y;
+            }
+            if (gp.z< min){
+                min = gp.z;
+            }
+        }
+        Debug.Log(max + "<-max , min -> "+ min);
+
+        foreach(Vector3Int gp in voxels.GridPoints){
+
+            Vector3 pos = new Vector3(gp.x/max, gp.y/max, gp.z/max);
+///
+            //cube.transform.localScale += new Vector3(2,2,2);
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.parent = this.transform;
             cube.transform.position = voxels.PointToPosition(gp);
+            cube.transform.localScale = new Vector3(voxels.HalfSize*2,voxels.HalfSize*2,voxels.HalfSize*2);
             cube.GetComponent<Renderer> ().material.color = myColor;
             Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
             cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
+///
+            // GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            // cube2.transform.parent = this.transform;
 
-            GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube2.transform.parent = this.transform;
-            cube2.transform.position = gp;
-            cube2.GetComponent<Renderer> ().material.color = myColor;
-            Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
-            cube2.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
+            // cube2.transform.position = gp;
+            // // cube2.transform.localScale = pos;
+            // cube2.GetComponent<Renderer> ().material.color = myColor;
+            // //Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
+            // cube2.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
         }
+        
     }
 
     public void spawnCubes(){
