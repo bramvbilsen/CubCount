@@ -10,6 +10,8 @@ public class ShapeController : MonoBehaviour
     public GameObject suzanne;
     
     MeshFilter yourMesh;
+
+    float rotSpeed = 200;
     
     private float moveSpeed = 0.5f;
     private float scrollSpeed = 10f;
@@ -90,10 +92,6 @@ public class ShapeController : MonoBehaviour
 
     public void spawnModel(){
         GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
-        //spawnedSuzanne.transform.parent = this.transform;
-        //  Color Seethrough = new Color(1.0f,1.0f,1.0f,0.0f);
-        //  spawnedSuzanne.GetComponent<Renderer> ().material.color = myColor;
-        //  spawnedSuzanne.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
         spawnVoxilizedMesh(spawnedSuzanne);
         Destroy(spawnedSuzanne);
     }
@@ -163,7 +161,7 @@ public class ShapeController : MonoBehaviour
          else{
              return true;
          }
-     }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -179,6 +177,13 @@ public class ShapeController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.X)) {
             spawnModel();
         }
+        if (Input.GetMouseButton(0))
+        {
+            float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
+            float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
+            transform.Rotate(Vector3.up, -rotationX);
+            transform.Rotate(Vector3.right,rotationY);
+        }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             RotateLeft();
@@ -186,6 +191,11 @@ public class ShapeController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
             RotateRight();
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            y=0;
         }
 
         ShapeRotation();
