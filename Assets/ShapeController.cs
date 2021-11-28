@@ -92,6 +92,8 @@ public class ShapeController : MonoBehaviour
 
     public void spawnModel(){
         GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
+        MeshCollider collider = spawnedSuzanne.GetComponent<MeshCollider>();
+        //collider.bounds
         spawnVoxilizedMesh(spawnedSuzanne);
         Destroy(spawnedSuzanne);
     }
