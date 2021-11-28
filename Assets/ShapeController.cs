@@ -18,7 +18,7 @@ public class ShapeController : MonoBehaviour
 
     private bool turnLeft;
     private bool turnRight;
-    private Color myColor = new Color(0.95f,0.82f,0.63f,0.3f);
+    private Color myColor = new Color(0.95f,0.82f,0.63f,0.8f);
     Renderer m_ObjectRenderer;
     Color tempcolor;
 
@@ -109,7 +109,7 @@ public class ShapeController : MonoBehaviour
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.parent = this.transform;
             cube.transform.position = voxels.PointToPosition(gp);
-            cube.transform.localScale = new Vector3(voxels.HalfSize*2,voxels.HalfSize*2,voxels.HalfSize*2);
+            cube.transform.localScale = new Vector3(voxels.HalfSize*2*0.90f,voxels.HalfSize*2*0.90f,voxels.HalfSize*2*0.90f);
             cube.GetComponent<Renderer> ().material.color = myColor;
             cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
             cube.layer = 10;
