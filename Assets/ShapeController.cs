@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
+using System;
 
 public class ShapeController : MonoBehaviour
 {
@@ -43,13 +44,7 @@ public class ShapeController : MonoBehaviour
         }
     }
 
-    // void OnCollisionEnter(Collision collision){
-    //     if(col.gameObject.name == "Sphere"){
-    //         Destroy(col.gameObject);
-    //     }
-    // }
-
-    public VoxelizedMesh VoxelizeMesh(MeshFilter meshFilter)
+    public VoxelizedMesh VoxelizeMesh(MeshFilter meshFilter,int layerMask, out int amount)
     {
         if (!meshFilter.TryGetComponent(out MeshCollider meshCollider))
         {
@@ -75,16 +70,17 @@ public class ShapeController : MonoBehaviour
         voxelizedMesh.GridPoints.Clear();
         voxelizedMesh.LocalOrigin = voxelizedMesh.transform.InverseTransformPoint(minExtents);
 
+        amount = 0;
+
         for (int x = 0; x < xGridSize; ++x)
         {
             for (int z = 0; z < zGridSize; ++z)
             {
-                for (int y = 0; y < yGridSize; ++y)
-                {
+                for (int y = 0; y < yGridSize; ++y){
                     Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
-                    if (Physics.CheckBox(pos, new Vector3(halfSize, halfSize, halfSize)))
-                    {
+                    if(inside(pos,new Vector3(-100,-1,-1),layerMask) && inside(pos,new Vector3(-1,-100,-1),layerMask)){
                         voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
+                        amount++;
                     }
                 }
             }
@@ -93,102 +89,81 @@ public class ShapeController : MonoBehaviour
     }
 
     public void spawnModel(){
-         GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
-         //spawnedSuzanne.transform.parent = this.transform;
+        GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
+        //spawnedSuzanne.transform.parent = this.transform;
         //  Color Seethrough = new Color(1.0f,1.0f,1.0f,0.0f);
         //  spawnedSuzanne.GetComponent<Renderer> ().material.color = myColor;
         //  spawnedSuzanne.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
-         spawnVoxilizedMesh(spawnedSuzanne);
-         Destroy(spawnedSuzanne);
+        spawnVoxilizedMesh(spawnedSuzanne);
+        Destroy(spawnedSuzanne);
     }
 
     public void spawnVoxilizedMesh(GameObject go){
         yourMesh = go.GetComponent<MeshFilter>();
-        VoxelizedMesh voxels = VoxelizeMesh(yourMesh);
-        int max = 0;
-        int min = 100;
-        foreach(Vector3Int gp in voxels.GridPoints){
-            if (gp.x> max){
-                max = gp.x;
-            }
-            if (gp.y> max){
-                max = gp.y;
-            }
-            if (gp.z> max){
-                max = gp.z;
-            }
-            if (gp.x< min){
-                min = gp.x;
-            }
-            if (gp.y< min){
-                min = gp.y;
-            }
-            if (gp.z< min){
-                min = gp.z;
-            }
-        }
-        Debug.Log(max + "<-max , min -> "+ min);
+        int layerMask = 1 << 10;
+        layerMask = ~layerMask;
+        VoxelizedMesh voxels = VoxelizeMesh(yourMesh,layerMask,out int amount);
+        Debug.Log(amount);
 
         foreach(Vector3Int gp in voxels.GridPoints){
-
-            Vector3 pos = new Vector3(gp.x/max, gp.y/max, gp.z/max);
-///
-            //cube.transform.localScale += new Vector3(2,2,2);
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.parent = this.transform;
             cube.transform.position = voxels.PointToPosition(gp);
             cube.transform.localScale = new Vector3(voxels.HalfSize*2,voxels.HalfSize*2,voxels.HalfSize*2);
             cube.GetComponent<Renderer> ().material.color = myColor;
-            Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
             cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
-///
-            // GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            // cube2.transform.parent = this.transform;
-
-            // cube2.transform.position = gp;
-            // // cube2.transform.localScale = pos;
-            // cube2.GetComponent<Renderer> ().material.color = myColor;
-            // //Debug.Log(gp.x + " "+ gp.y +" " + gp.z);
-            // cube2.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
+            cube.layer = 10;
         }
         
     }
 
-    public void spawnCubes(){
-        for (int i=0;i<8;i++){
-            for (int j=0;j<8;j++){
-                for (int k=0;k<8;k++){
-                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.transform.parent = this.transform;
-                    cube.transform.position = new Vector3(-4+i,-4+j, -4+k);
-                    cube.GetComponent<Renderer> ().material.color = myColor;
-                }
-            }
-        }
-    }
-
-    public void spawnCubesInSphere(){
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.localScale = new Vector3(5, 5, 5);
-        //Fetch the GameObject's Renderer component
-        m_ObjectRenderer = sphere.GetComponent<Renderer>();
-        Color newColor = new Color(255f,255f,255f,.5f);
-        m_ObjectRenderer.material.SetColor("_Color", newColor);
-        // m_ObjectRenderer.material.color = new Color(255f,255f,255f,.5f);
-        // //Change the GameObject's Material Color to red
-        // //m_ObjectRenderer.material.color = Color.red;
-        // tempcolor = m_ObjectRenderer.material.color;
-        // tempcolor.a = 0.8f;
-        // m_ObjectRenderer.material.color = tempcolor;
-
-
-        // GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        // sphere.transform.position = new Vector3(0, 1.5f, 0);
-        //sphere.GetComponent<Renderer>().material.color.a = 0.7f;
-
-        //Vector3 center = sphere.GetComponent<Renderer>().bounds.center;
-
-    }
+    public bool inside(Vector3 Goal, Vector3 Start,int layerMask) {
+         Vector3 Point;
+        //  Vector3 Goal = transform.position; // This is the point we want to determine whether or not is inside or outside the collider.
+         Vector3 Direction = Goal-Start; // This is the direction from start to goal.
+         Direction.Normalize();
+         int Itterations = 0; // If we know how many times the raycast has hit faces on its way to the target and back, we can tell through logic whether or not it is inside.
+         Point = Start;
+ 
+ 
+         while(Point != Goal) // Try to reach the point starting from the far off point.  This will pass through faces to reach its objective.
+         {
+             RaycastHit hit;
+             if( Physics.Linecast(Point, Goal, out hit, layerMask)) // Progressively move the point forward, stopping everytime we see a new plane in the way.
+             {
+                 Itterations ++;
+                 Point = hit.point + (Direction/100.0f); // Move the Point to hit.point and push it forward just a touch to move it through the skin of the mesh (if you don't push it, it will read that same point indefinately).
+             }
+             else
+             {
+                 Point = Goal; // If there is no obstruction to our goal, then we can reach it in one step.
+             }
+         }
+         while(Point != Start) // Try to return to where we came from, this will make sure we see all the back faces too.
+         {
+             RaycastHit hit;
+             if( Physics.Linecast(Point, Start, out hit, layerMask))
+             {
+                 Itterations ++;
+                 Point = hit.point + (-Direction/100.0f);
+             }
+             else
+             {
+                 Point = Start;
+             }
+         }
+         if(Itterations % 2 == 0)
+         {
+             return false;
+         }
+         if(Itterations % 2 == 1)
+         {
+             return true;
+         }
+         else{
+             return true;
+         }
+     }
 
     // Start is called before the first frame update
     void Start()
@@ -205,10 +180,6 @@ public class ShapeController : MonoBehaviour
             spawnModel();
         }
 
-        // if(Input.GetKeyDown(KeyCode.Z)) {
-        //     spawnVoxilizedMesh();
-        // }
-
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             RotateLeft();
         }
@@ -219,4 +190,8 @@ public class ShapeController : MonoBehaviour
 
         ShapeRotation();
     }
+
+    
+
+
 }
