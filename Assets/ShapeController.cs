@@ -79,11 +79,16 @@ public class ShapeController : MonoBehaviour
             for (int z = 0; z < zGridSize; ++z)
             {
                 for (int y = 0; y < yGridSize; ++y){
-                    Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
-                    if(inside(pos,new Vector3(-100,-1,-1),layerMask) && inside(pos,new Vector3(-1,-100,-1),layerMask)){
-                        voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
-                        amount++;
-                    }
+                    //Debug
+                    // Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
+                    voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
+
+
+                    // Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
+                    // if(inside(pos,new Vector3(-10,-100,-10),layerMask) || inside(pos,new Vector3(-10,-10,-100),layerMask) || inside(pos,new Vector3(-100,-10,-10),layerMask)){
+                    //     voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
+                    //     amount++;
+                    // }
                 }
             }
         }
@@ -92,28 +97,53 @@ public class ShapeController : MonoBehaviour
 
     public void spawnModel(){
         GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
-        MeshCollider collider = spawnedSuzanne.GetComponent<MeshCollider>();
-        //collider.bounds
+        // MeshFilter mf = spawnedSuzanne.GetComponent<MeshFilter>();
+        // if (!mf.TryGetComponent(out MeshCollider meshCollider))
+        // {
+        //     meshCollider = mf.gameObject.AddComponent<MeshCollider>();
+        // }
+        // Bounds b = meshCollider.bounds;
+        // float[] array = {b.max.x,b.max.y,b.max.z};
+        // array.Max();
+        // spawnedSuzanne.transform.localScale = new Vector3(2,2,2);
+        // spawnedSuzanne.transform.position = new Vector3(0,0,0);
         spawnVoxilizedMesh(spawnedSuzanne);
-        Destroy(spawnedSuzanne);
+        //Destroy(spawnedSuzanne);
     }
 
     public void spawnVoxilizedMesh(GameObject go){
         yourMesh = go.GetComponent<MeshFilter>();
         int layerMask = 1 << 10;
         layerMask = ~layerMask;
-        VoxelizedMesh voxels = VoxelizeMesh(yourMesh,layerMask,out int amount);
+        VoxelizedMesh voxelizedMesh = VoxelizeMesh(yourMesh,layerMask,out int amount);
         Debug.Log(amount);
 
-        foreach(Vector3Int gp in voxels.GridPoints){
+        // DEBUG
+        float size = voxelizedMesh.HalfSize * 2f;
+
+        foreach (Vector3Int gridPoint in voxelizedMesh.GridPoints)
+        {
+            Vector3 worldPos = voxelizedMesh.PointToPosition(gridPoint);
+
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.parent = this.transform;
-            cube.transform.position = voxels.PointToPosition(gp);
-            cube.transform.localScale = new Vector3(voxels.HalfSize*2*0.90f,voxels.HalfSize*2*0.90f,voxels.HalfSize*2*0.90f);
+            cube.transform.position = worldPos;
+            cube.transform.localScale = new Vector3(size,size,size);
             cube.GetComponent<Renderer> ().material.color = myColor;
             cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
             cube.layer = 10;
+
         }
+
+        // foreach(Vector3Int gp in voxels.GridPoints){
+        //     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //     cube.transform.parent = this.transform;
+        //     cube.transform.position = voxels.PointToPosition(gp);
+        //     cube.transform.localScale = new Vector3(voxels.HalfSize*2,voxels.HalfSize*2,voxels.HalfSize*2);
+        //     cube.GetComponent<Renderer> ().material.color = myColor;
+        //     cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
+        //     cube.layer = 10;
+        // }
         
     }
 
@@ -132,7 +162,7 @@ public class ShapeController : MonoBehaviour
              if( Physics.Linecast(Point, Goal, out hit, layerMask)) // Progressively move the point forward, stopping everytime we see a new plane in the way.
              {
                  Itterations ++;
-                 Point = hit.point + (Direction/100.0f); // Move the Point to hit.point and push it forward just a touch to move it through the skin of the mesh (if you don't push it, it will read that same point indefinately).
+                 Point = hit.point + (Direction/1000.0f); // Move the Point to hit.point and push it forward just a touch to move it through the skin of the mesh (if you don't push it, it will read that same point indefinately).
              }
              else
              {
@@ -145,7 +175,7 @@ public class ShapeController : MonoBehaviour
              if( Physics.Linecast(Point, Start, out hit, layerMask))
              {
                  Itterations ++;
-                 Point = hit.point + (-Direction/100.0f);
+                 Point = hit.point + (-Direction/1000.0f);
              }
              else
              {
