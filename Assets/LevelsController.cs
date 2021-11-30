@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelsOverviewController : MonoBehaviour
+public class LevelsController : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -18,6 +18,6 @@ public class LevelsOverviewController : MonoBehaviour
     }
 
     public void goBack() {
-        SceneManager.LoadScene("HomePage");
+        SceneManager.LoadScene("LevelsOverview");
     }
 }
