@@ -20,9 +20,11 @@ public class ShapeController : MonoBehaviour
 
     private bool turnLeft;
     private bool turnRight;
-    private Color myColor = new Color(0.95f,0.82f,0.63f,0.8f);
+    private Color myColor = new Color(0.95f,0.82f,0.63f,0.6f);
     Renderer m_ObjectRenderer;
     Color tempcolor;
+
+    Vector3 offset = new Vector3(0,0,0);
 
     public void RotateLeft()
     {
@@ -59,7 +61,6 @@ public class ShapeController : MonoBehaviour
         } else{
             Debug.Log("voxelizedmeshfout");
         }
-
         Bounds bounds = meshCollider.bounds;
         Vector3 minExtents = bounds.center - bounds.extents;
         float halfSize = voxelizedMesh.HalfSize;
@@ -79,6 +80,8 @@ public class ShapeController : MonoBehaviour
             for (int z = 0; z < zGridSize; ++z)
             {
                 for (int y = 0; y < yGridSize; ++y){
+                    // voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
+                    // amount++;
                     Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
                     if(inside(pos,new Vector3(-100,-1,-1),layerMask) && inside(pos,new Vector3(-1,-100,-1),layerMask)){
                         voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
@@ -91,25 +94,46 @@ public class ShapeController : MonoBehaviour
     }
 
     public void spawnModel(){
-        GameObject spawnedSuzanne = Instantiate(suzanne, new Vector3(0, 0, 0), Quaternion.identity);
-        MeshCollider collider = spawnedSuzanne.GetComponent<MeshCollider>();
-        //collider.bounds
+        GameObject spawnedSuzanne = Instantiate(suzanne, this.transform.position, Quaternion.identity);
+        if (!spawnedSuzanne.TryGetComponent(out MeshFilter meshFilter)){
+            yourMesh = spawnedSuzanne.AddComponent<MeshFilter>();
+        } else{
+            yourMesh = spawnedSuzanne.GetComponent<MeshFilter>();
+        }
+
+        if (!yourMesh.TryGetComponent(out MeshCollider meshCollider))
+        {
+            meshCollider = yourMesh.gameObject.AddComponent<MeshCollider>();
+        }
+        Debug.Log(meshCollider.bounds.center);
+        Vector3 currentpos = spawnedSuzanne.transform.position;
+        offset = new Vector3(-meshCollider.bounds.center.x+currentpos.x,-meshCollider.bounds.center.y+currentpos.y,-meshCollider.bounds.center.z+currentpos.z);
+        //spawnedSuzanne.transform.SetParent(this.transform);
         spawnVoxilizedMesh(spawnedSuzanne);
-        Destroy(spawnedSuzanne);
+        //Destroy(spawnedSuzanne);
+        Debug.Log(this.transform.position);
     }
 
     public void spawnVoxilizedMesh(GameObject go){
-        yourMesh = go.GetComponent<MeshFilter>();
+        // if (!go.TryGetComponent(out MeshFilter meshFilter)){
+        //     yourMesh = go.AddComponent<MeshFilter>();
+        // } else{
+        //     yourMesh = go.GetComponent<MeshFilter>();
+        // }
         int layerMask = 1 << 10;
         layerMask = ~layerMask;
         VoxelizedMesh voxels = VoxelizeMesh(yourMesh,layerMask,out int amount);
         Debug.Log(amount);
+        
+        float size = voxels.HalfSize *2f;
 
         foreach(Vector3Int gp in voxels.GridPoints){
+            Vector3 worldPos = voxels.PointToPosition(gp);
+
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.parent = this.transform;
-            cube.transform.position = voxels.PointToPosition(gp);
-            cube.transform.localScale = new Vector3(voxels.HalfSize*2*0.90f,voxels.HalfSize*2*0.90f,voxels.HalfSize*2*0.90f);
+            cube.transform.position = new Vector3(offset.x+worldPos.x,offset.y+worldPos.y,offset.z+worldPos.z);
+            cube.transform.localScale = new Vector3(size*0.90f,size*0.90f,size*0.90f);
             cube.GetComponent<Renderer> ().material.color = myColor;
             cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
             cube.layer = 10;
