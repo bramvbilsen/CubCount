@@ -20,4 +20,9 @@ public class LevelsOverviewController : MonoBehaviour
     public void goBack() {
         SceneManager.LoadScene("HomePage");
     }
+
+    public void goToLevel(int level){
+        Debug.Log(level);
+        SceneManager.LoadScene("Levels");
+    }
 }
