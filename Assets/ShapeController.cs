@@ -64,7 +64,7 @@ public class ShapeController : MonoBehaviour
         Bounds bounds = meshCollider.bounds;
         Vector3 minExtents = bounds.center - bounds.extents;
         float halfSize = voxelizedMesh.HalfSize;
-        Vector3 count = bounds.extents / halfSize;
+        Vector3 count = 2* bounds.extents / halfSize;
 
         int xGridSize = Mathf.CeilToInt(count.x);
         int yGridSize = Mathf.CeilToInt(count.y);
@@ -84,6 +84,11 @@ public class ShapeController : MonoBehaviour
                     // amount++;
                     Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
                     if(inside(pos,new Vector3(-100,-1,-1),layerMask) && inside(pos,new Vector3(-1,-100,-1),layerMask)){
+                        voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
+                        amount++;
+                    }
+                    else if (Physics.CheckBox(pos, new Vector3(halfSize, halfSize, halfSize)))
+                    {
                         voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
                         amount++;
                     }
@@ -110,7 +115,7 @@ public class ShapeController : MonoBehaviour
         offset = new Vector3(-meshCollider.bounds.center.x+currentpos.x,-meshCollider.bounds.center.y+currentpos.y,-meshCollider.bounds.center.z+currentpos.z);
         //spawnedSuzanne.transform.SetParent(this.transform);
         spawnVoxilizedMesh(spawnedSuzanne);
-        //Destroy(spawnedSuzanne);
+        Destroy(spawnedSuzanne);
         Debug.Log(this.transform.position);
     }
 
