@@ -20,4 +20,12 @@ public class HomePageController : MonoBehaviour
     public void goToLastLevel() {
         SceneManager.LoadScene("Levels");
     }
+
+    public void goToLevelOverview() {
+        SceneManager.LoadScene("LevelsOverview");
+    }
+
+    public void goToSettings() {
+        SceneManager.LoadScene("SettingsPage");
+    }
 }
