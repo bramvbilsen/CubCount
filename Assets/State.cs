@@ -6,6 +6,14 @@ using UnityEngine;
 public static class State
 {
     public static int getLastUnlockedLevel() {
-        return 1;
+        int val = PlayerPrefs.GetInt("level");
+        if (val == 0) {
+            return 1;
+        }
+        return val;
+    }
+
+    public static void updateLastUnlockedLevel(int level) {
+        PlayerPrefs.SetInt("level", level);
     }
 }

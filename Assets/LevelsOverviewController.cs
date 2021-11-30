@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,8 @@ public class LevelsOverviewController : MonoBehaviour
     }
 
     public void goToLevel(int level){
-        Debug.Log(level);
-        SceneManager.LoadScene("Levels");
+        if (State.getLastUnlockedLevel() >= level) {
+            SceneManager.LoadScene("Levels");
+        }
     }
 }
