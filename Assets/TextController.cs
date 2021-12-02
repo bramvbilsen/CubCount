@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class TextController : MonoBehaviour
 {
@@ -11,10 +12,12 @@ public class TextController : MonoBehaviour
     public void SetText(string s){
         Text guessText = txt.GetComponent<Text>();
         guessText.text += s;
+        guessText.color = new Color(255, 255, 255);
     }
 
     public void Backspace(){
         Text guessText = txt.GetComponent<Text>();
+        guessText.color = new Color(255, 255, 255);
 
         if (guessText.text != "")
         {
@@ -24,11 +27,19 @@ public class TextController : MonoBehaviour
 
     public void Clear(){
         Text guessText = txt.GetComponent<Text>();
+        guessText.color = new Color(255, 255, 255);
         guessText.text = "";
     }
 
     public void Submit(){
-        Debug.Log("Submitting guess");
+        Text guessText = txt.GetComponent<Text>();
+        int guess = Int32.Parse(guessText.text);
+        float maxOffset = State.CurrentBlockCount * 0.1f;
+        if (guess >= State.CurrentBlockCount - maxOffset && guess <= State.CurrentBlockCount + maxOffset) {
+            State.WinningGuess = guess;
+        } else {
+            guessText.color = new Color(255, 0, 0);
+        }
     }
  
 }

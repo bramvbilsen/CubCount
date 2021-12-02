@@ -95,6 +95,7 @@ public class ShapeController : MonoBehaviour
                 }
             }
         }
+        State.CurrentBlockCount = amount;
         return voxelizedMesh;
     }
 

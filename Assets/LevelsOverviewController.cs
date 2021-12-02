@@ -24,6 +24,7 @@ public class LevelsOverviewController : MonoBehaviour
 
     public void goToLevel(int level){
         if (State.getLastUnlockedLevel() >= level) {
+            State.CurrentLevel = level;
             SceneManager.LoadScene("Levels");
         }
     }
