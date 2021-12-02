@@ -115,7 +115,7 @@ public class ShapeController : MonoBehaviour
         offset = new Vector3(-meshCollider.bounds.center.x+currentpos.x,-meshCollider.bounds.center.y+currentpos.y,-meshCollider.bounds.center.z+currentpos.z);
         //spawnedSuzanne.transform.SetParent(this.transform);
         spawnVoxilizedMesh(spawnedSuzanne);
-        Destroy(spawnedSuzanne);
+        //Destroy(spawnedSuzanne);
         Debug.Log(this.transform.position);
     }
 
