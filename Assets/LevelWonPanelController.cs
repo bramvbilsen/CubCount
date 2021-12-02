@@ -61,7 +61,7 @@ public class LevelWonPanelController : MonoBehaviour
                 );
             Debug.Log(json);
             StartCoroutine(PostRequest(
-                "https://silent-parrot-2.loca.lt/levelCompletion",
+                "https://fresh-firefox-0.loca.lt/",
                 json
             ));
         }
