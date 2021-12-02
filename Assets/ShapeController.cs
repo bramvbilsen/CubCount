@@ -33,8 +33,6 @@ public class ShapeController : MonoBehaviour
     public GameObject shape9;
     public float HalfSize9;
 
-
-    public int currentLevel;
     private float currentHalfSize;
 
     
@@ -230,7 +228,7 @@ public class ShapeController : MonoBehaviour
     {
         turnLeft = false;
         turnRight = false;
-        switch (currentLevel){
+        switch (State.CurrentLevel){
             case 1:
                 currentHalfSize = HalfSize1;
                 spawnModel(shape1);
