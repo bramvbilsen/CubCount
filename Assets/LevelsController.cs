@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HomePageController : MonoBehaviour
+public class LevelsController : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -17,16 +17,7 @@ public class HomePageController : MonoBehaviour
         
     }
 
-    public void goToLastLevel() {
-        Debug.Log(State.getLastUnlockedLevel());
-        SceneManager.LoadScene("Levels");
-    }
-
-    public void goToLevelOverview() {
+    public void goBack() {
         SceneManager.LoadScene("LevelsOverview");
-    }
-
-    public void goToSettings() {
-        SceneManager.LoadScene("SettingsPage");
     }
 }
