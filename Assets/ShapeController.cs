@@ -125,7 +125,6 @@ public class ShapeController : MonoBehaviour
                 }
             }
         }
-        State.CurrentBlockCount = amount;
         return voxelizedMesh;
     }
 
@@ -163,6 +162,7 @@ public class ShapeController : MonoBehaviour
         
         float size = voxels.HalfSize *2f;
 
+        State.shapeCubes = new List<GameObject>();
         foreach(Vector3Int gp in voxels.GridPoints){
             Vector3 worldPos = voxels.PointToPosition(gp);
 
@@ -173,6 +173,7 @@ public class ShapeController : MonoBehaviour
             cube.GetComponent<Renderer> ().material.color = myColor;
             cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
             cube.layer = 10;
+            State.shapeCubes.Add(cube);
         }
         
     }
@@ -276,6 +277,7 @@ public class ShapeController : MonoBehaviour
     {        
 
         if (level != State.CurrentLevel) {
+            level = State.CurrentLevel;
             switch (State.CurrentLevel){
                 case 1:
                     currentHalfSize = HalfSize1;

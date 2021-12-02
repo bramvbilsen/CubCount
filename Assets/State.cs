@@ -12,6 +12,10 @@ public static class State
 
     static public bool ShowWinningPanel { get; set; } = false;
 
+    static public List<GameObject> shapeCubes = new List<GameObject>();
+
+    static public int levelCount = 9;
+
     public static int getLastUnlockedLevel() {
         int val = PlayerPrefs.GetInt("level");
         if (val == 0) {
@@ -21,6 +25,8 @@ public static class State
     }
 
     public static void updateLastUnlockedLevel(int level) {
-        PlayerPrefs.SetInt("level", level);
+        if (level > PlayerPrefs.GetInt("level")) {
+            PlayerPrefs.SetInt("level", level);
+        }
     }
 }

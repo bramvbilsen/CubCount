@@ -34,8 +34,10 @@ public class TextController : MonoBehaviour
     public void Submit(){
         Text guessText = txt.GetComponent<Text>();
         int guess = Int32.Parse(guessText.text);
-        float maxOffset = State.CurrentBlockCount * 0.1f;
-        if (guess >= State.CurrentBlockCount - maxOffset && guess <= State.CurrentBlockCount + maxOffset) {
+        int blockCount = State.shapeCubes.Count;
+        float maxOffset = blockCount * 0.1f;
+        Debug.Log(blockCount);
+        if (guess >= blockCount - maxOffset && guess <= blockCount + maxOffset) {
             Debug.Log("Won");
             State.WinningGuess = guess;
             State.ShowWinningPanel = true;
