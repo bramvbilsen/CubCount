@@ -155,6 +155,7 @@ public class ShapeController : MonoBehaviour
         spawnVoxilizedMesh(spawnedSuzanne);
         Destroy(spawnedSuzanne);
         State.timer = 0.0f;
+        State.nbTries = 0;
     }
 
     private void SpawnCurrentLevelFile() {

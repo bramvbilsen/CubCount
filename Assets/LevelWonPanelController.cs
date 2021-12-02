@@ -58,6 +58,7 @@ public class LevelWonPanelController : MonoBehaviour
                     State.nbTries,
                     (State.getInputMethod() == InputMethod.CONTINUOUS_SWIPE).ToString().ToLower()
                 );
+            Debug.Log(json);
             StartCoroutine(PostRequest(
                 "https://silent-parrot-2.loca.lt/levelCompletion",
                 json
