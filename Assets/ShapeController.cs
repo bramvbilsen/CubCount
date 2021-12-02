@@ -7,6 +7,8 @@ using System;
 
 public class ShapeController : MonoBehaviour
 {
+
+    int level;
     public GameObject shape1;
     public float HalfSize1;
     public GameObject shape2;
@@ -144,7 +146,7 @@ public class ShapeController : MonoBehaviour
         offset = new Vector3(-meshCollider.bounds.center.x+currentpos.x,-meshCollider.bounds.center.y+currentpos.y,-meshCollider.bounds.center.z+currentpos.z);
         //spawnedSuzanne.transform.SetParent(this.transform);
         spawnVoxilizedMesh(spawnedSuzanne);
-        //Destroy(spawnedSuzanne);
+        Destroy(spawnedSuzanne);
         Debug.Log(this.transform.position);
     }
 
@@ -226,6 +228,7 @@ public class ShapeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        level = State.CurrentLevel;
         turnLeft = false;
         turnRight = false;
         switch (State.CurrentLevel){
@@ -271,10 +274,49 @@ public class ShapeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
-        // //Spawn model
-        // if(Input.GetKeyDown(KeyCode.X)) {
-        //     spawnModel(shape1);
-        // }
+
+        if (level != State.CurrentLevel) {
+            switch (State.CurrentLevel){
+                case 1:
+                    currentHalfSize = HalfSize1;
+                    spawnModel(shape1);
+                    break;
+                case 2:
+                    currentHalfSize = HalfSize2;
+                    spawnModel(shape2);
+                    break;
+                case 3:
+                    currentHalfSize = HalfSize3;
+                    spawnModel(shape3);
+                    break;
+                case 4:
+                    currentHalfSize = HalfSize4;
+                    spawnModel(shape4);
+                    break;
+                case 5:
+                    currentHalfSize = HalfSize5;
+                    spawnModel(shape5);
+                    break;
+                case 6:
+                    currentHalfSize = HalfSize6;
+                    spawnModel(shape6);
+                    break;
+                case 7:
+                    currentHalfSize = HalfSize7;
+                    spawnModel(shape7);
+                    break;
+                case 8:
+                    currentHalfSize = HalfSize8;
+                    spawnModel(shape8);
+                    break;
+                case 9:
+                    currentHalfSize = HalfSize9;
+                    spawnModel(shape9);
+                    break;
+            }
+    
+        }
+
         if (Input.GetMouseButton(0))
         {
             float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;

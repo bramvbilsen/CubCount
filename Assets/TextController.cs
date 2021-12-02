@@ -36,7 +36,9 @@ public class TextController : MonoBehaviour
         int guess = Int32.Parse(guessText.text);
         float maxOffset = State.CurrentBlockCount * 0.1f;
         if (guess >= State.CurrentBlockCount - maxOffset && guess <= State.CurrentBlockCount + maxOffset) {
+            Debug.Log("Won");
             State.WinningGuess = guess;
+            State.ShowWinningPanel = true;
         } else {
             guessText.color = new Color(255, 0, 0);
         }
