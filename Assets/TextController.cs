@@ -11,7 +11,11 @@ public class TextController : MonoBehaviour
 
     public void SetText(string s){
         Text guessText = txt.GetComponent<Text>();
-        guessText.text += s;
+        if (guessText.color.g == 0) { // Currently text is red
+            guessText.text = s;
+        } else {
+            guessText.text += s;
+        }
         guessText.color = new Color(255, 255, 255);
     }
 
