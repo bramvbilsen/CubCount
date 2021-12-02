@@ -41,6 +41,7 @@ public class TextController : MonoBehaviour
             State.winningTime = State.timer; // Reset in the shape controller
             State.WinningGuess = guess;
             State.ShowWinningPanel = true;
+            guessText.text = "";
         } else {
             guessText.color = new Color(255, 0, 0);
         }
