@@ -173,7 +173,6 @@ public class ShapeController : MonoBehaviour
     }
 
     public void spawnVoxilizedMesh(GameObject go){
-        SpawnCurrentLevelFile();
         int layerMask = 1 << 10;
         layerMask = ~layerMask;
         VoxelizedMesh voxels = VoxelizeMesh(yourMesh,layerMask,out int amount);
