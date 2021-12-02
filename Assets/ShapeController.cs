@@ -7,7 +7,36 @@ using System;
 
 public class ShapeController : MonoBehaviour
 {
-    public GameObject suzanne;
+    public GameObject shape1;
+    public float HalfSize1;
+    public GameObject shape2;
+    public float HalfSize2;
+
+    public GameObject shape3;
+    public float HalfSize3;
+
+    public GameObject shape4;
+    public float HalfSize4;
+
+    public GameObject shape5;
+    public float HalfSize5;
+
+    public GameObject shape6;
+    public float HalfSize6;
+
+    public GameObject shape7;
+    public float HalfSize7;
+
+    public GameObject shape8;
+    public float HalfSize8;
+
+    public GameObject shape9;
+    public float HalfSize9;
+
+
+    public int currentLevel;
+    private float currentHalfSize;
+
     
     MeshFilter yourMesh;
 
@@ -58,6 +87,7 @@ public class ShapeController : MonoBehaviour
         if (!meshFilter.TryGetComponent(out VoxelizedMesh voxelizedMesh))
         {
             voxelizedMesh = meshFilter.gameObject.AddComponent<VoxelizedMesh>();
+            voxelizedMesh.HalfSize = currentHalfSize;
         } else{
             Debug.Log("voxelizedmeshfout");
         }
@@ -98,7 +128,7 @@ public class ShapeController : MonoBehaviour
         return voxelizedMesh;
     }
 
-    public void spawnModel(){
+    public void spawnModel(GameObject suzanne){
         GameObject spawnedSuzanne = Instantiate(suzanne, this.transform.position, Quaternion.identity);
         if (!spawnedSuzanne.TryGetComponent(out MeshFilter meshFilter)){
             yourMesh = spawnedSuzanne.AddComponent<MeshFilter>();
@@ -199,15 +229,53 @@ public class ShapeController : MonoBehaviour
     {
         turnLeft = false;
         turnRight = false;
+        switch (currentLevel){
+            case 1:
+                currentHalfSize = HalfSize1;
+                spawnModel(shape1);
+                break;
+            case 2:
+                currentHalfSize = HalfSize2;
+                spawnModel(shape2);
+                break;
+            case 3:
+                currentHalfSize = HalfSize3;
+                spawnModel(shape3);
+                break;
+            case 4:
+                currentHalfSize = HalfSize4;
+                spawnModel(shape4);
+                break;
+            case 5:
+                currentHalfSize = HalfSize5;
+                spawnModel(shape5);
+                break;
+            case 6:
+                currentHalfSize = HalfSize6;
+                spawnModel(shape6);
+                break;
+            case 7:
+                currentHalfSize = HalfSize7;
+                spawnModel(shape7);
+                break;
+            case 8:
+                currentHalfSize = HalfSize8;
+                spawnModel(shape8);
+                break;
+            case 9:
+                currentHalfSize = HalfSize9;
+                spawnModel(shape9);
+                break;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {        
-        //Spawn model
-        if(Input.GetKeyDown(KeyCode.X)) {
-            spawnModel();
-        }
+        // //Spawn model
+        // if(Input.GetKeyDown(KeyCode.X)) {
+        //     spawnModel(shape1);
+        // }
         if (Input.GetMouseButton(0))
         {
             float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
