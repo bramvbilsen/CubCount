@@ -72,7 +72,7 @@ public class LevelWonPanelController : MonoBehaviour
             State.updateLastUnlockedLevel(State.CurrentLevel+1);
         }
         State.CurrentLevel+=1;
-        if (State.CurrentLevel >= State.levelCount) {
+        if (State.CurrentLevel > State.levelCount) {
             SceneManager.LoadScene("HomePage");
         }
         State.ShowWinningPanel = false;
