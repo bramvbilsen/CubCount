@@ -9,6 +9,10 @@ using System;
 public class ShapeController : MonoBehaviour
 {
 
+    private Touch touch;
+    private Vector2 touchPosition;
+    private Quaternion rotationY;
+    private float rotationSpeedModifier = 0.1f;
     int level;
     public GameObject shape1;
     public float HalfSize1;
@@ -347,12 +351,28 @@ public class ShapeController : MonoBehaviour
     
         }
 
-        if (Input.GetMouseButton(0))
+        // if (Input.GetMouseButton(0))
+        // {
+        //     Debug.Log(Input.GetAxis("Mouse X"));
+        //     float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
+        //     float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
+        //     transform.Rotate(Vector3.up, -rotationX,Space.World);
+        //     transform.Rotate(Vector3.right,rotationY,Space.World);
+        // }
+
+        if (Input.touchCount>0)
         {
-            float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
-            float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
-            transform.Rotate(Vector3.up, -rotationX,Space.World);
-            transform.Rotate(Vector3.right,rotationY,Space.World);
+            touch = Input.GetTouch(0); 
+            if (touch.phase == TouchPhase.Moved){
+                rotationY = Quaternion.Euler(0f,-touch.deltaPosition.x*rotationSpeedModifier,0f);
+                transform.rotation = rotationY * transform.rotation;
+            }
+            // if (Input.GetAxis("Mouse X") > 0){
+            //     RotateRight();
+            // }
+            // if (Input.GetAxis("Mouse X") < 0){
+            //     RotateLeft();
+            // }
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
@@ -370,8 +390,4 @@ public class ShapeController : MonoBehaviour
 
         ShapeRotation();
     }
-
-    
-
-
 }
