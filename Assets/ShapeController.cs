@@ -9,6 +9,8 @@ using System;
 public class ShapeController : MonoBehaviour
 {
 
+    private float x1;
+    private float x2;
     private UnityEngine.MeshFilter bruh;
     private UnityEngine.MeshRenderer unity;
     private UnityEngine.BoxCollider has;
@@ -354,27 +356,29 @@ public class ShapeController : MonoBehaviour
     
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
-            float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
-            transform.Rotate(Vector3.up, -rotationX,Space.World);
-            transform.Rotate(Vector3.right,rotationY,Space.World);
+        if(State.getInputMethod() == InputMethod.PERSPECTIVE_SWIPE){
+            if(Input.GetMouseButtonDown(0)){
+                x1 = Input.mousePosition.x;
+            }
+            if(Input.GetMouseButtonUp(0)){
+                x2 = Input.mousePosition.x;
+                if(x1>x2){
+                    RotateLeft();
+                }
+                if(x1<x2){
+                    RotateRight();
+                }
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            RotateLeft();
+        else{
+            if (Input.GetMouseButton(0))
+            {
+                float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
+                float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
+                transform.Rotate(Vector3.up, -rotationX,Space.World);
+                transform.Rotate(Vector3.right,rotationY,Space.World);
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            RotateRight();
-        }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
-            y=0;
-        }
-
         ShapeRotation();
     }
 
