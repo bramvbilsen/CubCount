@@ -323,8 +323,8 @@ public class ShapeController : MonoBehaviour
         {
             float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
             float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
-            transform.Rotate(Vector3.up, -rotationX);
-            transform.Rotate(Vector3.right,rotationY);
+            transform.Rotate(Vector3.up, -rotationX,Space.World);
+            transform.Rotate(Vector3.right,rotationY,Space.World);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
