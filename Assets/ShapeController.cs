@@ -154,6 +154,7 @@ public class ShapeController : MonoBehaviour
         spawnedSuzanne.transform.SetParent(this.transform);
         spawnVoxilizedMesh(spawnedSuzanne);
         Destroy(spawnedSuzanne);
+        State.timer = 0.0f;
     }
 
     private void SpawnCurrentLevelFile() {

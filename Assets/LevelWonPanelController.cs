@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class LevelWonPanelController : MonoBehaviour
 {
@@ -13,6 +14,27 @@ public class LevelWonPanelController : MonoBehaviour
     void Start()
     {
         this.gameObject.transform.localScale = new Vector3(0, 0, 0);
+    }
+
+    IEnumerator PostRequest(string url, string json)
+    {
+        var uwr = new UnityWebRequest(url, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+        uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        uwr.SetRequestHeader("Content-Type", "application/json");
+
+        //Send the request then wait here until it returns
+        yield return uwr.SendWebRequest();
+
+        if (uwr.isNetworkError)
+        {
+            Debug.Log("Error While Sending: " + uwr.error);
+        }
+        else
+        {
+            Debug.Log("Received: " + uwr.downloadHandler.text);
+        }
     }
 
     // Update is called once per frame
@@ -29,6 +51,17 @@ public class LevelWonPanelController : MonoBehaviour
             yourGuessTxt.text =  "Your guess: " + State.WinningGuess;
             Text actualAmountTxt = GameObject.Find("ActualAmountTxt").GetComponent<Text>();
             actualAmountTxt.text = "Actual amount: " + cubeCount;
+            string json = string.Format(
+                    "{{\"level\": {0}, \"time\": {1}, \"tries\": {2}, \"continuousSwipe\": {3}}}",
+                    State.CurrentLevel,
+                    State.winningTime % 60,
+                    State.nbTries,
+                    (State.getInputMethod() == InputMethod.CONTINUOUS_SWIPE).ToString().ToLower()
+                );
+            StartCoroutine(PostRequest(
+                "https://silent-parrot-2.loca.lt/levelCompletion",
+                json
+            ));
         }
     }
 

@@ -14,7 +14,7 @@ public class LevelsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        State.timer += Time.deltaTime;
     }
 
     public void goBack() {

@@ -5,8 +5,7 @@ using UnityEngine;
 
 public enum InputMethod {
     CONTINUOUS_SWIPE,
-    PERSPECTIVE_SWIPE,
-    NONE
+    PERSPECTIVE_SWIPE
 }
 
 public static class State
@@ -17,6 +16,12 @@ public static class State
     static public int WinningGuess { get; set; }
 
     static public bool ShowWinningPanel { get; set; } = false;
+
+    static public int nbTries { get; set; } = 0;
+
+    static public float timer = 0.0f;
+
+    static public float winningTime = 0.0f;
 
     static public List<GameObject> shapeCubes = new List<GameObject>();
 
@@ -44,12 +49,14 @@ public static class State
 
     public static InputMethod getInputMethod() {
         String val = PlayerPrefs.GetString("Input");
+        Debug.Log(val);
         if (val == "perspectiveSwipe") {
             return InputMethod.PERSPECTIVE_SWIPE;
         } else if (val == "continuousSwipe") {
             return InputMethod.CONTINUOUS_SWIPE;
         } else {
-            return InputMethod.NONE;
+            assignInputMethod();
+            return getInputMethod();
         }
     }
 }
