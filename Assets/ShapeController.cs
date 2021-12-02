@@ -163,8 +163,8 @@ public class ShapeController : MonoBehaviour
             cube.transform.parent = this.transform;
             cube.transform.position = new Vector3(float.Parse(lineArr[0]),float.Parse(lineArr[1]),float.Parse(lineArr[2]));
             cube.transform.localScale = new Vector3(size*0.90f,size*0.90f,size*0.90f);
+            cube.GetComponent<Renderer> ().material = new Material(Shader.Find( "Transparent/Diffuse" ));
             cube.GetComponent<Renderer> ().material.color = myColor;
-            cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
             cube.layer = 10;
             State.shapeCubes.Add(cube);
         }
