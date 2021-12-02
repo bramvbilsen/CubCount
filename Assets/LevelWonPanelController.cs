@@ -51,10 +51,11 @@ public class LevelWonPanelController : MonoBehaviour
             yourGuessTxt.text =  "Your guess: " + State.WinningGuess;
             Text actualAmountTxt = GameObject.Find("ActualAmountTxt").GetComponent<Text>();
             actualAmountTxt.text = "Actual amount: " + cubeCount;
+            string winningTime = (State.winningTime % 60).ToString().Replace(',', '.');
             string json = string.Format(
                     "{{\"level\": {0}, \"time\": {1}, \"tries\": {2}, \"continuousSwipe\": {3}}}",
                     State.CurrentLevel,
-                    State.winningTime % 60,
+                    winningTime,
                     State.nbTries,
                     (State.getInputMethod() == InputMethod.CONTINUOUS_SWIPE).ToString().ToLower()
                 );
