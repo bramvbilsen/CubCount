@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEditor;
 using System;
+ using System.IO;
 
 public class ShapeController : MonoBehaviour
 {
@@ -143,18 +144,36 @@ public class ShapeController : MonoBehaviour
         Debug.Log(meshCollider.bounds.center);
         Vector3 currentpos = spawnedSuzanne.transform.position;
         offset = new Vector3(-meshCollider.bounds.center.x+currentpos.x,-meshCollider.bounds.center.y+currentpos.y,-meshCollider.bounds.center.z+currentpos.z);
-        //spawnedSuzanne.transform.SetParent(this.transform);
+        spawnedSuzanne.transform.SetParent(this.transform);
         spawnVoxilizedMesh(spawnedSuzanne);
         Destroy(spawnedSuzanne);
-        Debug.Log(this.transform.position);
+    }
+
+    private void SpawnCurrentLevelFile() {
+        TextAsset txtData = (TextAsset)Resources.Load("Level" + State.CurrentLevel, typeof(TextAsset));
+        StringReader reader = new StringReader(txtData.text);
+        String line;
+        line = reader.ReadLine();
+        float size = float.Parse(line);
+        int i = 0;
+        while((line = reader.ReadLine()) != null){
+            i++;
+            string[] lineArr = line.Split(',');
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.parent = this.transform;
+            cube.transform.position = new Vector3(float.Parse(lineArr[0]),float.Parse(lineArr[1]),float.Parse(lineArr[2]));
+            cube.transform.localScale = new Vector3(size*0.90f,size*0.90f,size*0.90f);
+            cube.GetComponent<Renderer> ().material.color = myColor;
+            cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
+            cube.layer = 10;
+            State.shapeCubes.Add(cube);
+        }
+        Debug.Log(i);
+        // Debug.Log(State.shapeCubes.Count);
     }
 
     public void spawnVoxilizedMesh(GameObject go){
-        // if (!go.TryGetComponent(out MeshFilter meshFilter)){
-        //     yourMesh = go.AddComponent<MeshFilter>();
-        // } else{
-        //     yourMesh = go.GetComponent<MeshFilter>();
-        // }
+        SpawnCurrentLevelFile();
         int layerMask = 1 << 10;
         layerMask = ~layerMask;
         VoxelizedMesh voxels = VoxelizeMesh(yourMesh,layerMask,out int amount);
@@ -163,6 +182,11 @@ public class ShapeController : MonoBehaviour
         float size = voxels.HalfSize *2f;
 
         State.shapeCubes = new List<GameObject>();
+
+        // string path = "Assets/Resources/Level" + State.CurrentLevel + ".txt";
+        // StreamWriter writer = new StreamWriter(path, true);
+        // writer.WriteLine(((float)(size)).ToString());
+
         foreach(Vector3Int gp in voxels.GridPoints){
             Vector3 worldPos = voxels.PointToPosition(gp);
 
@@ -174,7 +198,11 @@ public class ShapeController : MonoBehaviour
             cube.GetComponent<Renderer>().material.shader = Shader.Find( "Transparent/Diffuse" );
             cube.layer = 10;
             State.shapeCubes.Add(cube);
+
+            // writer.WriteLine(((float)(offset.x+worldPos.x)).ToString() + "," + ((float)(offset.y+worldPos.y)).ToString() + "," + ((float)(offset.z+worldPos.z)).ToString());
         }
+
+        // writer.Close();
         
     }
 
