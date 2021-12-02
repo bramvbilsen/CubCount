@@ -10,6 +10,10 @@ public class HomePageController : MonoBehaviour
     void Start()
     {
         State.CurrentLevel = 1;
+        if (State.getInputMethod() == InputMethod.NONE) {
+            State.assignInputMethod();
+        }
+        Debug.Log(State.getInputMethod());
     }
 
     // Update is called once per frame

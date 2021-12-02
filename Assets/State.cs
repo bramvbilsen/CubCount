@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum InputMethod {
+    CONTINUOUS_SWIPE,
+    PERSPECTIVE_SWIPE,
+    NONE
+}
+
 public static class State
 {
     static public int CurrentLevel { get; set; }
@@ -27,6 +33,23 @@ public static class State
     public static void updateLastUnlockedLevel(int level) {
         if (level > PlayerPrefs.GetInt("level")) {
             PlayerPrefs.SetInt("level", level);
+        }
+    }
+
+    public static void assignInputMethod() {
+        System.Random rnd = new System.Random();
+        int val = rnd.Next(0, 2);
+        PlayerPrefs.SetString("Input", val == 0 ? "perspectiveSwipe" : "continuousSwipe");
+    }
+
+    public static InputMethod getInputMethod() {
+        String val = PlayerPrefs.GetString("Input");
+        if (val == "perspectiveSwipe") {
+            return InputMethod.PERSPECTIVE_SWIPE;
+        } else if (val == "continuousSwipe") {
+            return InputMethod.CONTINUOUS_SWIPE;
+        } else {
+            return InputMethod.NONE;
         }
     }
 }
