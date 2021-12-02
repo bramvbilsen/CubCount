@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Linq;
 using UnityEditor;
 using System;
- using System.IO;
+using System.IO;
+using UnityEngine.UI;
 
 public class ShapeController : MonoBehaviour
 {
@@ -156,6 +157,12 @@ public class ShapeController : MonoBehaviour
         Destroy(spawnedSuzanne);
         State.timer = 0.0f;
         State.nbTries = 0;
+        Text tutorialTxt = GameObject.Find("Tutorial").GetComponent<Text>();
+        if (State.CurrentLevel == 1) {
+            tutorialTxt.text = "Guess\nthe number of cubes";
+        } else {
+            tutorialTxt.text = "";
+        }
     }
 
     private void SpawnCurrentLevelFile() {
