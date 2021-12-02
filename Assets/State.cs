@@ -49,7 +49,6 @@ public static class State
 
     public static InputMethod getInputMethod() {
         String val = PlayerPrefs.GetString("Input");
-        Debug.Log(val);
         if (val == "perspectiveSwipe") {
             return InputMethod.PERSPECTIVE_SWIPE;
         } else if (val == "continuousSwipe") {
