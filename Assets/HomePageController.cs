@@ -9,7 +9,6 @@ public class HomePageController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        State.ResetLevels();
         State.CurrentLevel = 1;
         State.getInputMethod();
     }
