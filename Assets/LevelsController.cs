@@ -22,7 +22,8 @@ public class LevelsController : MonoBehaviour
         SceneManager.LoadScene("LevelsOverview");
     }
     public void goSettings(){
-        SceneManager.LoadScene("SettingsPage");
+            State.lastScene = "Levels";
+            SceneManager.LoadScene("SettingsPage");
     }
     public void SwitchInput() {
         String val = PlayerPrefs.GetString("Input");

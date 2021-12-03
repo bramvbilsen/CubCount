@@ -29,6 +29,7 @@ public class HomePageController : MonoBehaviour
     }
 
     public void goToSettings() {
+        State.lastScene = "HomePage";
         SceneManager.LoadScene("SettingsPage");
     }
 }

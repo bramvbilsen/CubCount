@@ -27,6 +27,8 @@ public static class State
 
     static public int levelCount = 9;
 
+    static public String lastScene = "HomePage";
+
     public static int getLastUnlockedLevel() {
         int val = PlayerPrefs.GetInt("level");
         if (val == 0) {

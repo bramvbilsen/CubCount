@@ -17,7 +17,7 @@ public class SettingsPageController : MonoBehaviour
         
     }
 
-    public void goHome() {
-        SceneManager.LoadScene("HomePage");
+    public void goBack() {
+        SceneManager.LoadScene(State.lastScene);
     }
 }
