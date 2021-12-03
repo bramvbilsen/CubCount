@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LevelsController : MonoBehaviour
 {
@@ -22,5 +23,13 @@ public class LevelsController : MonoBehaviour
     }
     public void goSettings(){
         SceneManager.LoadScene("SettingsPage");
+    }
+    public void SwitchInput() {
+        String val = PlayerPrefs.GetString("Input");
+        if (val == "perspectiveSwipe") {
+            PlayerPrefs.SetString("Input", "continuousSwipe");
+        } else if (val == "continuousSwipe") {
+            PlayerPrefs.SetString("Input", "perspectiveSwipe");
+        }
     }
 }
