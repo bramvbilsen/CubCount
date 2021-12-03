@@ -30,6 +30,7 @@ public class LevelsOverviewController : MonoBehaviour
     }
 
     public void goSettings(){
+            State.lastScene = "LevelsOverview";
             SceneManager.LoadScene("SettingsPage");
     }
 }
