@@ -28,4 +28,8 @@ public class LevelsOverviewController : MonoBehaviour
             SceneManager.LoadScene("Levels");
         }
     }
+
+    public void goSettings(){
+            SceneManager.LoadScene("SettingsPage");
+    }
 }
