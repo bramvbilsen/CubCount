@@ -41,6 +41,10 @@ public static class State
         }
     }
 
+    public static void ResetLevels() {
+        PlayerPrefs.SetInt("level", 1);
+    }
+
     public static void assignInputMethod() {
         System.Random rnd = new System.Random();
         int val = rnd.Next(0, 2);
