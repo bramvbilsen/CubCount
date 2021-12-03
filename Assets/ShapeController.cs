@@ -124,12 +124,32 @@ public class ShapeController : MonoBehaviour
                     // voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
                     // amount++;
                     Vector3 pos = voxelizedMesh.PointToPosition(new Vector3Int(x, y, z));
-                    if(inside(pos,new Vector3(-100,-1,-1),layerMask) && inside(pos,new Vector3(-1,-100,-1),layerMask)){
-                        voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
-                        amount++;
+                    int vote=0;
+                    if(inside(pos,new Vector3(-10,-1,-1),layerMask)){
+                        vote++;
                     }
-                    else if (Physics.CheckBox(pos, new Vector3(halfSize, halfSize, halfSize)))
-                    {
+                    if(inside(pos,new Vector3(-1,-10,-1),layerMask)){
+                        vote++;
+                    }
+                    if(inside(pos,new Vector3(-1,-1,-10),layerMask)){
+                        vote++;
+                    }
+                    if(inside(pos,new Vector3(10,-1,-1),layerMask)){
+                        vote++;
+                    }
+                    if(inside(pos,new Vector3(-1,10,-1),layerMask)){
+                        vote++;
+                    }
+                    if(inside(pos,new Vector3(-1,-1,10),layerMask)){
+                        vote++;
+                    }
+                    if (Physics.CheckBox(pos, new Vector3(halfSize, halfSize, halfSize))){
+                        vote++;
+                        vote++;
+                        vote++;
+                        vote++;
+                    }
+                    if(vote>=4){
                         voxelizedMesh.GridPoints.Add(new Vector3Int(x, y, z));
                         amount++;
                     }
@@ -229,10 +249,11 @@ public class ShapeController : MonoBehaviour
          Direction.Normalize();
          int Itterations = 0; // If we know how many times the raycast has hit faces on its way to the target and back, we can tell through logic whether or not it is inside.
          Point = Start;
- 
+         int hangs = 0;
  
          while(Point != Goal) // Try to reach the point starting from the far off point.  This will pass through faces to reach its objective.
          {
+             hangs++;
              RaycastHit hit;
              if( Physics.Linecast(Point, Goal, out hit, layerMask)) // Progressively move the point forward, stopping everytime we see a new plane in the way.
              {
@@ -243,9 +264,15 @@ public class ShapeController : MonoBehaviour
              {
                  Point = Goal; // If there is no obstruction to our goal, then we can reach it in one step.
              }
+             if (hangs>25){
+                 Itterations = 2;
+                 break;
+             }
+
          }
          while(Point != Start) // Try to return to where we came from, this will make sure we see all the back faces too.
          {
+             hangs++;
              RaycastHit hit;
              if( Physics.Linecast(Point, Start, out hit, layerMask))
              {
@@ -255,6 +282,11 @@ public class ShapeController : MonoBehaviour
              else
              {
                  Point = Start;
+             }
+            if (hangs>25){
+                 Debug.Log("hangs:" + hangs);
+                 Itterations = 2;
+                 break;
              }
          }
          if(Itterations % 2 == 0)
