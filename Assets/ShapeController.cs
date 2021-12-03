@@ -179,11 +179,11 @@ public class ShapeController : MonoBehaviour
         Destroy(spawnedSuzanne);
         State.timer = 0.0f;
         State.nbTries = 0;
-        Text tutorialTxt = GameObject.Find("Tutorial").GetComponent<Text>();
+        Text levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
         if (State.CurrentLevel == 1) {
-            tutorialTxt.text = "Guess\nthe number of cubes";
+            levelTxt.text = "Guess\nthe number of cubes";
         } else {
-            tutorialTxt.text = "";
+            levelTxt.text = "Level " + State.CurrentLevel;
         }
     }
 
