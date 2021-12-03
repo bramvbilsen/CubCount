@@ -20,4 +20,9 @@ public class SettingsPageController : MonoBehaviour
     public void goBack() {
         SceneManager.LoadScene(State.lastScene);
     }
+
+    public void ResetLevels() {
+        State.ResetLevels();
+        SceneManager.LoadScene("HomePage");
+    }
 }

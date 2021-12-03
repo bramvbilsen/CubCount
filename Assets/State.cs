@@ -45,6 +45,7 @@ public static class State
 
     public static void ResetLevels() {
         PlayerPrefs.SetInt("level", 1);
+        State.CurrentLevel = 1;
     }
 
     public static void assignInputMethod() {
