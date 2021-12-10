@@ -21,6 +21,7 @@ public class HomePageController : MonoBehaviour
 
     public void goToLastLevel() {
         Debug.Log(State.getLastUnlockedLevel());
+        State.CurrentLevel = State.getLastUnlockedLevel();
         SceneManager.LoadScene("Levels");
     }
 

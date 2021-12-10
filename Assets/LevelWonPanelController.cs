@@ -64,8 +64,8 @@ public class LevelWonPanelController : MonoBehaviour
                 );
             Debug.Log(json);
             StartCoroutine(PostRequest(
-                "https://c9d2d3382a7848.localhost.run/levelCompletion",
-                //"https://fresh-firefox-0.loca.lt/levelCompletion",
+                // "https://c9d2d3382a7848.localhost.run/levelCompletion",
+                "https://fresh-firefox-0.loca.lt/levelCompletion",
                 json
             ));
         }
