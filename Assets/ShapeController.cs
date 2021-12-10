@@ -179,6 +179,7 @@ public class ShapeController : MonoBehaviour
         Destroy(spawnedSuzanne);
         State.timer = 0.0f;
         State.nbTries = 0;
+        State.currentGuesses = new List<int>();
         Text levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
         if (State.CurrentLevel == 1) {
             levelTxt.text = "Guess\nthe number of cubes";
@@ -395,28 +396,12 @@ public class ShapeController : MonoBehaviour
     
         }
 
-        if(State.getInputMethod() == InputMethod.PERSPECTIVE_SWIPE){
-            if(Input.GetMouseButtonDown(0)){
-                x1 = Input.mousePosition.x;
-            }
-            if(Input.GetMouseButtonUp(0)){
-                x2 = Input.mousePosition.x;
-                if(x1>x2){
-                    RotateLeft();
-                }
-                if(x1<x2){
-                    RotateRight();
-                }
-            }
-        }
-        else{
-            if (Input.GetMouseButton(0))
-            {
-                float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
-                float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
-                transform.Rotate(Vector3.up, -rotationX,Space.World);
-                transform.Rotate(Vector3.right,rotationY,Space.World);
-            }
+        if (Input.GetMouseButton(0))
+        {
+            float rotationX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
+            float rotationY = Input.GetAxis("Mouse Y") * rotSpeed * Mathf.Deg2Rad;
+            transform.Rotate(Vector3.up, -rotationX,Space.World);
+            transform.Rotate(Vector3.right,rotationY,Space.World);
         }
         ShapeRotation();
     }

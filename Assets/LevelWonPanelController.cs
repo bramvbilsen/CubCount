@@ -53,15 +53,19 @@ public class LevelWonPanelController : MonoBehaviour
             actualAmountTxt.text = "Actual amount: " + cubeCount;
             string winningTime = (State.winningTime % 60).ToString().Replace(',', '.');
             string json = string.Format(
-                    "{{\"level\": {0}, \"time\": {1}, \"tries\": {2}, \"continuousSwipe\": {3}}}",
+                    "{{\"level\": {0}, \"time\": {1}, \"tries\": {2}, \"id\": \"{3}\", \"difficulty\": {4}, \"guesses\":{5}}}",
                     State.CurrentLevel,
                     winningTime,
                     State.nbTries,
-                    (State.getInputMethod() == InputMethod.CONTINUOUS_SWIPE).ToString().ToLower()
+                    State.getUserID(),
+                    State.getDifficulty(),
+                    "[" + string.Join( ",", State.currentGuesses.ToArray()) + "]"
+                    // (State.getInputMethod() == InputMethod.CONTINUOUS_SWIPE).ToString().ToLower()
                 );
             Debug.Log(json);
             StartCoroutine(PostRequest(
-                "https://fresh-firefox-0.loca.lt/",
+                "https://c9d2d3382a7848.localhost.run/levelCompletion",
+                //"https://fresh-firefox-0.loca.lt/levelCompletion",
                 json
             ));
         }

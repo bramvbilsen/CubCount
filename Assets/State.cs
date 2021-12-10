@@ -21,6 +21,8 @@ public static class State
 
     static public float timer = 0.0f;
 
+    static public List<int> currentGuesses = new List<int>();
+
     static public float winningTime = 0.0f;
 
     static public List<GameObject> shapeCubes = new List<GameObject>();
@@ -48,21 +50,31 @@ public static class State
         State.CurrentLevel = 1;
     }
 
-    public static void assignInputMethod() {
-        System.Random rnd = new System.Random();
-        int val = rnd.Next(0, 2);
-        PlayerPrefs.SetString("Input", val == 0 ? "perspectiveSwipe" : "continuousSwipe");
+    public static String getUserID(){
+
+        String id = PlayerPrefs.GetString("id");
+
+        if ( id == ""){
+            System.Guid myGUID = System.Guid.NewGuid();
+            PlayerPrefs.SetString("id", myGUID.ToString());
+            id = myGUID.ToString();
+        }
+
+        Debug.Log("ID :" + id);
+        return id;
     }
 
-    public static InputMethod getInputMethod() {
-        String val = PlayerPrefs.GetString("Input");
-        if (val == "perspectiveSwipe") {
-            return InputMethod.PERSPECTIVE_SWIPE;
-        } else if (val == "continuousSwipe") {
-            return InputMethod.CONTINUOUS_SWIPE;
-        } else {
-            assignInputMethod();
-            return getInputMethod();
+
+    public static int getDifficulty(){
+
+        int val = PlayerPrefs.GetInt("difficulty");
+        
+        if ( val == 0 ){
+            System.Random rnd = new System.Random();
+            val = rnd.Next(1,5);
+            PlayerPrefs.SetInt("difficulty", val);
         }
+
+        return val;
     }
 }

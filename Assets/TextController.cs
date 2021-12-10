@@ -39,7 +39,19 @@ public class TextController : MonoBehaviour
         Text guessText = txt.GetComponent<Text>();
         int guess = Int32.Parse(guessText.text);
         int blockCount = State.shapeCubes.Count;
-        float maxOffset = blockCount * 0.1f;
+
+        int d = State.getDifficulty();
+        float difficulty = 0.1f;
+        
+        if (d == 2){
+            difficulty = 0.15f;
+        } else if (d == 3){
+            difficulty = 0.20f;
+        } else if (d == 4){
+            difficulty = 0.25f;
+        } 
+
+        float maxOffset = blockCount * difficulty;
         State.nbTries++;
         if (guess >= blockCount - maxOffset && guess <= blockCount + maxOffset) {
             State.winningTime = State.timer; // Reset in the shape controller
@@ -49,6 +61,7 @@ public class TextController : MonoBehaviour
         } else {
             guessText.color = new Color(255, 0, 0);
         }
+        State.currentGuesses.Add(guess);
     }
  
 }

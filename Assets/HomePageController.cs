@@ -10,7 +10,7 @@ public class HomePageController : MonoBehaviour
     void Start()
     {
         State.CurrentLevel = 1;
-        State.getInputMethod();
+        State.getUserID();
     }
 
     // Update is called once per frame
