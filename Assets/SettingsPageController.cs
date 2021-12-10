@@ -25,4 +25,15 @@ public class SettingsPageController : MonoBehaviour
         State.ResetLevels();
         SceneManager.LoadScene("HomePage");
     }
+
+    public void pauseMusic(){
+        if(MusicBackground.Instance.gameObject.GetComponent<AudioSource>().isPlaying){
+            MusicBackground.Instance.gameObject.GetComponent<AudioSource>().Pause();
+        } else{
+            MusicBackground.Instance.gameObject.GetComponent<AudioSource>().UnPause();
+        }
+    }
+    public void startMusic(){
+        MusicBackground.Instance.gameObject.GetComponent<AudioSource>().UnPause();
+    }
 }
