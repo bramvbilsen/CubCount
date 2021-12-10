@@ -9,9 +9,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: CubeMaterial
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: UNITY_UI_ALPHACLIP _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
+  m_ShaderKeywords: UNITY_UI_ALPHACLIP _EMISSION _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
     _WINDQUALITY_FASTEST
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -118,7 +118,7 @@ Material:
     - _CameraNearFadeDistance: 1
     - _ColorMask: 15
     - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 0.841
     - _DetailNormalMapScale: 1
     - _DistortionBlend: 0.5
     - _DistortionEnabled: 0
@@ -129,11 +129,11 @@ Material:
     - _FlipbookMode: 0
     - _Focus: -100
     - _GlossMapScale: 0.502
-    - _Glossiness: 1
+    - _Glossiness: 0.457
     - _GlossyReflections: 0
     - _HueVariationKwToggle: 0
     - _LightingEnabled: 1
-    - _Metallic: 0.259
+    - _Metallic: 0.126
     - _Mode: 0
     - _NormalMapKwToggle: 0
     - _OcclusionStrength: 1
@@ -160,8 +160,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.8585882, b: 0, a: 0.74509805}
-    - _EmissionColor: {r: 0.039546248, g: 0.039546248, b: 0.039546248, a: 1}
+    - _Color: {r: 1, g: 0.8585882, b: 0, a: 1}
+    - _EmissionColor: {r: 0.509434, g: 0.186292, b: 0.03556424, a: 1}
     - _HueVariationColor: {r: 1, g: 0.5, b: 0, a: 0.1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _Specular: {r: 1, g: 0, b: 0.89628696, a: 1}
